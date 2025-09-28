@@ -94,6 +94,7 @@ public class AppView {
             SetorResponsavel setor = escolherSetor();
             PessoaTutora pessoa = setor.getPessoaTutora();
             Animal animal = animalController.criarAnimal(nome, especie, raca, idade, sexo, situacao, setor, pessoa);
+            animal.setSetor(setor); // reforça vínculo
             setorController.vincularAnimal(setor, animal);
             System.out.println("Animal cadastrado com sucesso!");
         } catch (Exception e) {
@@ -119,6 +120,9 @@ public class AppView {
             System.out.println("Animal não encontrado.");
             return;
         }
+        // Garante que o setor do animal está preenchido
+        SetorResponsavel setor = buscarSetorDoAnimal(animal);
+        animal.setSetor(setor);
         try {
             System.out.print("Novo nome (atual: " + animal.getNome() + "): "); String nome = scanner.nextLine();
             System.out.print("Nova espécie (atual: " + animal.getEspecie() + "): "); String especie = scanner.nextLine();
@@ -128,6 +132,7 @@ public class AppView {
             System.out.print("Nova situação (atual: " + animal.getSituacao() + "): "); String situacao = scanner.nextLine();
             animal.setNome(nome); animal.setEspecie(especie); animal.setRaca(raca); animal.setIdade(idade); animal.setSexo(sexo); animal.setSituacao(situacao);
             animalController.atualizarAnimal(animal);
+            setorController.atualizarSetor(setor);
             System.out.println("Animal atualizado com sucesso!");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
@@ -143,14 +148,31 @@ public class AppView {
             System.out.println("Animal não encontrado.");
             return;
         }
+        // Garante que o setor do animal está preenchido
+        SetorResponsavel setor = buscarSetorDoAnimal(animal);
+        animal.setSetor(setor);
         System.out.print("Tem certeza que deseja remover? (s/n): ");
         String confirm = scanner.nextLine();
         if (confirm.equalsIgnoreCase("s")) {
             animalController.removerAnimal(id);
+            setor.getAnimais().removeIf(a -> a.getId() == id);
+            setorController.atualizarSetor(setor);
             System.out.println("Animal removido com sucesso!");
         } else {
             System.out.println("Remoção cancelada.");
         }
+    }
+
+    private SetorResponsavel buscarSetorDoAnimal(Animal animal) {
+        List<SetorResponsavel> setores = setorController.listarTodos();
+        for (SetorResponsavel setor : setores) {
+            for (Animal a : setor.getAnimais()) {
+                if (a.getId() == animal.getId()) {
+                    return setor;
+                }
+            }
+        }
+        return null;
     }
 
     private void menuSetores() {

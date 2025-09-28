@@ -2,50 +2,33 @@
   "id" : 1,
   "nome" : "Modulo 1",
   "endereco" : "Modulo 1, UEFS",
-  "animais" : [ {
-    "id" : 1,
-    "nome" : "Moana",
-    "especie" : "Cachorro",
-    "raca" : "Poodle",
-    "idade" : 2,
-    "sexo" : "F",
-    "situacao" : "Disponível para adoção",
-    "pessoaTutora" : {
-      "email" : "teste@gmail.com",
-      "nome" : "Barreto Silva",
-      "endereco" : "Rua A, FSA, BA",
-      "telefone" : "75981888888"
-    }
-  } ],
+  "animais" : [ ],
   "pessoaTutora" : {
-    "email" : "teste@gmail.com",
-    "nome" : "Barreto Silva",
-    "endereco" : "Rua A, FSA, BA",
+    "email" : "teste1@gmail.com",
+    "nome" : "Barreto",
+    "endereco" : "Rua B, UEFS",
     "telefone" : "75981888888"
   }
 }, {
   "id" : 2,
   "nome" : "Modulo 2",
   "endereco" : "Modulo 2, UEFS",
-  "animais" : [ {
-    "id" : 2,
-    "nome" : "Bolinha",
-    "especie" : "Cachorro",
-    "raca" : "Viralata",
-    "idade" : 2,
-    "sexo" : "M",
-    "situacao" : "Em observação",
-    "pessoaTutora" : {
-      "email" : "teste2@gmail.com",
-      "nome" : "Madalena Braga",
-      "endereco" : "Rua B, FSA, BA",
-      "telefone" : "75981554422"
-    }
-  } ],
+  "animais" : [ ],
   "pessoaTutora" : {
     "email" : "teste2@gmail.com",
-    "nome" : "Madalena Braga",
-    "endereco" : "Rua B, FSA, BA",
-    "telefone" : "75981554422"
+    "nome" : "Barretoza",
+    "endereco" : "Rua A, UEFS",
+    "telefone" : "75985558888"
+  }
+}, {
+  "id" : 3,
+  "nome" : "Modulo 3",
+  "endereco" : "Modulo 3, UEFS",
+  "animais" : [ ],
+  "pessoaTutora" : {
+    "email" : "teste3@gmail.com",
+    "nome" : "Paolo",
+    "endereco" : "Rua P, UEFS",
+    "telefone" : "75985886333"
   }
 } ]
