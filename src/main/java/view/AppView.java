@@ -70,7 +70,27 @@ public class AppView {
             System.out.print("Raça (opcional): "); String raca = scanner.nextLine();
             System.out.print("Idade: "); int idade = lerInt();
             System.out.print("Sexo (M/F): "); String sexo = scanner.nextLine();
-            System.out.print("Situação: "); String situacao = scanner.nextLine();
+            System.out.println("Situação:");
+            System.out.println("1 - Em observação");
+            System.out.println("2 - Disponível para adoção");
+            System.out.println("3 - Em tratamento");
+            System.out.print("Escolha a situação (1/2/3): ");
+            int opcaoSituacao = lerInt();
+            String situacao;
+            switch (opcaoSituacao) {
+                case 1:
+                    situacao = "Em observação";
+                    break;
+                case 2:
+                    situacao = "Disponível para adoção";
+                    break;
+                case 3:
+                    situacao = "Em tratamento";
+                    break;
+                default:
+                    System.out.println("Opção inválida! Usando 'Em observação' por padrão.");
+                    situacao = "Em observação";
+            }
             SetorResponsavel setor = escolherSetor();
             PessoaTutora pessoa = escolherPessoaTutora();
             Animal animal = animalController.criarAnimal(nome, especie, raca, idade, sexo, situacao, setor, pessoa);

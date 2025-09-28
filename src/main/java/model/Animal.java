@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
 public class Animal {
@@ -11,6 +13,7 @@ public class Animal {
     private int idade;
     private String sexo;
     private String situacao;
+    @JsonIgnore
     private SetorResponsavel setor;
     private PessoaTutora pessoaTutora;
 
@@ -25,6 +28,8 @@ public class Animal {
         setSetor(setor);
         setPessoaTutora(pessoaTutora);
     }
+
+    public Animal() {}
 
     public int getId() { return id; }
     public void setId(int id) {
@@ -61,10 +66,7 @@ public class Animal {
         this.situacao = situacao;
     }
     public SetorResponsavel getSetor() { return setor; }
-    public void setSetor(SetorResponsavel setor) {
-        if (setor == null) throw new IllegalArgumentException("Setor responsável é obrigatório.");
-        this.setor = setor;
-    }
+    public void setSetor(SetorResponsavel setor) { this.setor = setor; }
     public PessoaTutora getPessoaTutora() { return pessoaTutora; }
     public void setPessoaTutora(PessoaTutora pessoaTutora) {
         if (pessoaTutora == null) throw new IllegalArgumentException("Pessoa tutora é obrigatória.");

@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -8,6 +10,7 @@ public class PessoaTutora {
     private String nome;
     private String endereco;
     private String telefone;
+    @JsonIgnore
     private SetorResponsavel setor;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(gmail|outlook|hotmail)\\.com$");
@@ -20,6 +23,9 @@ public class PessoaTutora {
         setTelefone(telefone);
         setSetor(setor);
     }
+
+    // Construtor padrão público
+    public PessoaTutora() {}
 
     public String getEmail() { return email; }
     public void setEmail(String email) {

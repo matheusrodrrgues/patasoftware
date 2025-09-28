@@ -20,6 +20,8 @@ public class SetorResponsavel {
         this.pessoasTutoras = new ArrayList<>();
     }
 
+    public SetorResponsavel() {}
+
     public int getId() { return id; }
     public void setId(int id) {
         if (id <= 0) throw new IllegalArgumentException("ID do setor deve ser positivo.");
@@ -51,7 +53,7 @@ public class SetorResponsavel {
     }
 
     public void adicionarPessoaTutora(PessoaTutora pessoa) {
-        if (pessoa != null && !pessoasTutoras.contains(pessoa)) {
+        if (pessoa != null && pessoasTutoras.stream().noneMatch(p -> p.getEmail().equals(pessoa.getEmail()))) {
             pessoasTutoras.add(pessoa);
         }
     }
