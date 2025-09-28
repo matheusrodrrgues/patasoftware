@@ -69,7 +69,6 @@ public class Animal {
     public void setSetor(SetorResponsavel setor) { this.setor = setor; }
     public PessoaTutora getPessoaTutora() { return pessoaTutora; }
     public void setPessoaTutora(PessoaTutora pessoaTutora) {
-        if (pessoaTutora == null) throw new IllegalArgumentException("Pessoa tutora é obrigatória.");
         this.pessoaTutora = pessoaTutora;
     }
 

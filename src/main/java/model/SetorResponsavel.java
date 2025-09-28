@@ -10,14 +10,13 @@ public class SetorResponsavel {
     private String nome;
     private String endereco;
     private List<Animal> animais;
-    private List<PessoaTutora> pessoasTutoras;
+    private PessoaTutora pessoaTutora;
 
     public SetorResponsavel(String nome, String endereco) {
         this.id = contador++;
         setNome(nome);
         setEndereco(endereco);
         this.animais = new ArrayList<>();
-        this.pessoasTutoras = new ArrayList<>();
     }
 
     public SetorResponsavel() {}
@@ -41,20 +40,12 @@ public class SetorResponsavel {
     public void setAnimais(List<Animal> animais) {
         this.animais = animais == null ? new ArrayList<>() : animais;
     }
-    public List<PessoaTutora> getPessoasTutoras() { return pessoasTutoras; }
-    public void setPessoasTutoras(List<PessoaTutora> pessoasTutoras) {
-        this.pessoasTutoras = pessoasTutoras == null ? new ArrayList<>() : pessoasTutoras;
-    }
+    public PessoaTutora getPessoaTutora() { return pessoaTutora; }
+    public void setPessoaTutora(PessoaTutora pessoaTutora) { this.pessoaTutora = pessoaTutora; }
 
     public void adicionarAnimal(Animal animal) {
         if (animal != null && !animais.contains(animal)) {
             animais.add(animal);
-        }
-    }
-
-    public void adicionarPessoaTutora(PessoaTutora pessoa) {
-        if (pessoa != null && pessoasTutoras.stream().noneMatch(p -> p.getEmail().equals(pessoa.getEmail()))) {
-            pessoasTutoras.add(pessoa);
         }
     }
 

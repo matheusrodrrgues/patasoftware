@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PessoaTutoraRepository {
     private List<PessoaTutora> pessoasTutoras;
-    private static final String ARQUIVO_JSON = "pessoas_tutoras.json";
+    private static final String ARQUIVO_JSON = "src/main/java/dados/pessoas_tutoras.json";
 
     public PessoaTutoraRepository() {
         pessoasTutoras = new ArrayList<>();

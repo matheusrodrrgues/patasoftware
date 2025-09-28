@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SetorRepository {
     private List<SetorResponsavel> setores;
-    private static final String ARQUIVO_JSON = "setores.json";
+    private static final String ARQUIVO_JSON = "src/main/java/dados/setores.json";
 
     public SetorRepository() {
         setores = new ArrayList<>();

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AnimalRepository {
     private List<Animal> animais;
-    private static final String ARQUIVO_JSON = "animais.json";
+    private static final String ARQUIVO_JSON = "src/main/java/dados/animais.json";
 
     public AnimalRepository() {
         animais = new ArrayList<>();

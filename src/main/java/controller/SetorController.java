@@ -30,6 +30,7 @@ public class SetorController {
             System.out.println("Setor não encontrado.");
             return;
         }
+        // Remanejamento de animais permanece igual
         List<Animal> animaisVinculados = setor.getAnimais();
         if (animaisVinculados != null && !animaisVinculados.isEmpty()) {
             System.out.println("Remanejando animais para o setor: " + novoSetorRemanejamento.getNome());
@@ -38,12 +39,10 @@ public class SetorController {
                 setorService.vincularAnimal(novoSetorRemanejamento, animal);
             }
         }
-        // Apaga todas as pessoas tutoras vinculadas ao setor
-        List<PessoaTutora> pessoas = setor.getPessoasTutoras();
-        if (pessoas != null && !pessoas.isEmpty()) {
-            for (PessoaTutora pessoa : pessoas) {
-                pessoaTutoraService.removerPessoaTutora(pessoa.getEmail());
-            }
+        // Remove a pessoa tutora vinculada ao setor
+        PessoaTutora pessoa = setor.getPessoaTutora();
+        if (pessoa != null) {
+            pessoaTutoraService.removerPessoaTutora(pessoa.getEmail());
         }
         setorService.removerSetor(id);
         System.out.println("Setor removido com sucesso.");

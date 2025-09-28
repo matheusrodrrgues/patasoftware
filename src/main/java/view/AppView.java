@@ -92,7 +92,7 @@ public class AppView {
                     situacao = "Em observação";
             }
             SetorResponsavel setor = escolherSetor();
-            PessoaTutora pessoa = escolherPessoaTutora();
+            PessoaTutora pessoa = setor.getPessoaTutora();
             Animal animal = animalController.criarAnimal(nome, especie, raca, idade, sexo, situacao, setor, pessoa);
             setorController.vincularAnimal(setor, animal);
             System.out.println("Animal cadastrado com sucesso!");
@@ -358,9 +358,9 @@ public class AppView {
         System.out.println("Relatório de Setores e Pessoas Tutoras:");
         for (SetorResponsavel setor : setores) {
             System.out.println("Setor: " + setor.getNome());
-            List<PessoaTutora> pessoas = setor.getPessoasTutoras();
-            if (pessoas != null && !pessoas.isEmpty()) {
-                pessoas.forEach(p -> System.out.println("  Tutora: " + p.getNome() + " (" + p.getEmail() + ")"));
+            PessoaTutora pessoa = setor.getPessoaTutora();
+            if (pessoa != null) {
+                System.out.println("  Tutora: " + pessoa.getNome() + " (" + pessoa.getEmail() + ")");
             } else {
                 System.out.println("  Nenhuma pessoa tutora vinculada.");
             }

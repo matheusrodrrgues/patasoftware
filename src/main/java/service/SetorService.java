@@ -41,7 +41,7 @@ public class SetorService {
     }
 
     public void vincularPessoaTutora(SetorResponsavel setor, PessoaTutora pessoa) {
-        setor.adicionarPessoaTutora(pessoa);
+        setor.setPessoaTutora(pessoa);
         atualizarSetor(setor);
     }
 }

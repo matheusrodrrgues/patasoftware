@@ -31,7 +31,8 @@ public class AnimalController {
                 System.out.println("Situação inválida! Usando 'Em observação' por padrão.");
                 situacaoFinal = "Em observação";
         }
-        return animalService.criarAnimal(nome, especie, raca, idade, sexo, situacaoFinal, setor, pessoaTutora);
+        PessoaTutora pessoa = setor.getPessoaTutora();
+        return animalService.criarAnimal(nome, especie, raca, idade, sexo, situacaoFinal, setor, pessoa);
     }
 
     public void atualizarAnimal(Animal animal) {
