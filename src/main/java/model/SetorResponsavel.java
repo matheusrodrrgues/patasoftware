@@ -5,23 +5,24 @@ import java.util.List;
 import java.util.Objects;
 
 public class SetorResponsavel {
-    private String id;
+    private static int contador = 1;
+    private int id;
     private String nome;
     private String endereco;
     private List<Animal> animais;
     private List<PessoaTutora> pessoasTutoras;
 
-    public SetorResponsavel(String id, String nome, String endereco) {
-        setId(id);
+    public SetorResponsavel(String nome, String endereco) {
+        this.id = contador++;
         setNome(nome);
         setEndereco(endereco);
         this.animais = new ArrayList<>();
         this.pessoasTutoras = new ArrayList<>();
     }
 
-    public String getId() { return id; }
-    public void setId(String id) {
-        if (id == null || id.isEmpty()) throw new IllegalArgumentException("ID do setor é obrigatório.");
+    public int getId() { return id; }
+    public void setId(int id) {
+        if (id <= 0) throw new IllegalArgumentException("ID do setor deve ser positivo.");
         this.id = id;
     }
     public String getNome() { return nome; }

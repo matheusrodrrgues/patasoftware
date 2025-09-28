@@ -14,18 +14,35 @@ public class AnimalController {
     }
 
     public Animal criarAnimal(String nome, String especie, String raca, int idade, String sexo, String situacao, SetorResponsavel setor, PessoaTutora pessoaTutora) {
-        return animalService.criarAnimal(nome, especie, raca, idade, sexo, situacao, setor, pessoaTutora);
+        String situacaoFinal;
+        switch (situacao.toLowerCase()) {
+            case "em observação":
+            case "em observacao":
+                situacaoFinal = "Em observação";
+                break;
+            case "disponível para adoção":
+            case "disponivel para adocao":
+                situacaoFinal = "Disponível para adoção";
+                break;
+            case "em tratamento":
+                situacaoFinal = "Em tratamento";
+                break;
+            default:
+                System.out.println("Situação inválida! Usando 'Em observação' por padrão.");
+                situacaoFinal = "Em observação";
+        }
+        return animalService.criarAnimal(nome, especie, raca, idade, sexo, situacaoFinal, setor, pessoaTutora);
     }
 
     public void atualizarAnimal(Animal animal) {
         animalService.atualizarAnimal(animal);
     }
 
-    public void removerAnimal(String id) {
+    public void removerAnimal(int id) {
         animalService.removerAnimal(id);
     }
 
-    public Animal buscarPorId(String id) {
+    public Animal buscarPorId(int id) {
         return animalService.buscarPorId(id);
     }
 

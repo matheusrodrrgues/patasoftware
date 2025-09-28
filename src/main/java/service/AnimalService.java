@@ -4,9 +4,7 @@ import model.Animal;
 import model.SetorResponsavel;
 import model.PessoaTutora;
 import repository.AnimalRepository;
-import repository.IDManager;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AnimalService {
@@ -17,10 +15,8 @@ public class AnimalService {
     }
 
     public Animal criarAnimal(String nome, String especie, String raca, int idade, String sexo, String situacao, SetorResponsavel setor, PessoaTutora pessoaTutora) {
-        String id = gerarIdUnico();
-        Animal animal = new Animal(id, nome, especie, raca, idade, sexo, situacao, setor, pessoaTutora);
+        Animal animal = new Animal(nome, especie, raca, idade, sexo, situacao, setor, pessoaTutora);
         animalRepository.salvar(animal);
-        IDManager.adicionarId(id);
         return animal;
     }
 
@@ -28,12 +24,11 @@ public class AnimalService {
         animalRepository.atualizar(animal);
     }
 
-    public void removerAnimal(String id) {
+    public void removerAnimal(int id) {
         animalRepository.remover(id);
-        IDManager.removerId(id);
     }
 
-    public Animal buscarPorId(String id) {
+    public Animal buscarPorId(int id) {
         return animalRepository.buscarPorId(id);
     }
 
@@ -51,13 +46,5 @@ public class AnimalService {
         return animalRepository.listarTodos().stream()
                 .filter(a -> a.getPessoaTutora().equals(pessoa))
                 .collect(Collectors.toList());
-    }
-
-    private String gerarIdUnico() {
-        String id;
-        do {
-            id = UUID.randomUUID().toString();
-        } while (IDManager.existeId(id));
-        return id;
     }
 }

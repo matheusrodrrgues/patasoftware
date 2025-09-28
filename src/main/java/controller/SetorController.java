@@ -4,13 +4,16 @@ import model.SetorResponsavel;
 import model.Animal;
 import model.PessoaTutora;
 import service.SetorService;
+import service.PessoaTutoraService;
 import java.util.List;
 
 public class SetorController {
     private SetorService setorService;
+    private PessoaTutoraService pessoaTutoraService;
 
     public SetorController() {
         setorService = new SetorService();
+        pessoaTutoraService = new PessoaTutoraService();
     }
 
     public SetorResponsavel criarSetor(String nome, String endereco) {
@@ -21,11 +24,32 @@ public class SetorController {
         setorService.atualizarSetor(setor);
     }
 
-    public void removerSetor(String id) {
+    public void removerSetor(int id, SetorResponsavel novoSetorRemanejamento) {
+        SetorResponsavel setor = setorService.buscarPorId(id);
+        if (setor == null) {
+            System.out.println("Setor não encontrado.");
+            return;
+        }
+        List<Animal> animaisVinculados = setor.getAnimais();
+        if (animaisVinculados != null && !animaisVinculados.isEmpty()) {
+            System.out.println("Remanejando animais para o setor: " + novoSetorRemanejamento.getNome());
+            for (Animal animal : animaisVinculados) {
+                animal.setSetor(novoSetorRemanejamento);
+                setorService.vincularAnimal(novoSetorRemanejamento, animal);
+            }
+        }
+        // Apaga todas as pessoas tutoras vinculadas ao setor
+        List<PessoaTutora> pessoas = setor.getPessoasTutoras();
+        if (pessoas != null && !pessoas.isEmpty()) {
+            for (PessoaTutora pessoa : pessoas) {
+                pessoaTutoraService.removerPessoaTutora(pessoa.getEmail());
+            }
+        }
         setorService.removerSetor(id);
+        System.out.println("Setor removido com sucesso.");
     }
 
-    public SetorResponsavel buscarPorId(String id) {
+    public SetorResponsavel buscarPorId(int id) {
         return setorService.buscarPorId(id);
     }
 

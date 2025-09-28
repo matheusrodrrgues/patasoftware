@@ -4,9 +4,7 @@ import model.SetorResponsavel;
 import model.Animal;
 import model.PessoaTutora;
 import repository.SetorRepository;
-import repository.IDManager;
 import java.util.List;
-import java.util.UUID;
 
 public class SetorService {
     private SetorRepository setorRepository;
@@ -16,10 +14,8 @@ public class SetorService {
     }
 
     public SetorResponsavel criarSetor(String nome, String endereco) {
-        String id = gerarIdUnico();
-        SetorResponsavel setor = new SetorResponsavel(id, nome, endereco);
+        SetorResponsavel setor = new SetorResponsavel(nome, endereco);
         setorRepository.salvar(setor);
-        IDManager.adicionarId(id);
         return setor;
     }
 
@@ -27,12 +23,11 @@ public class SetorService {
         setorRepository.atualizar(setor);
     }
 
-    public void removerSetor(String id) {
+    public void removerSetor(int id) {
         setorRepository.remover(id);
-        IDManager.removerId(id);
     }
 
-    public SetorResponsavel buscarPorId(String id) {
+    public SetorResponsavel buscarPorId(int id) {
         return setorRepository.buscarPorId(id);
     }
 
@@ -48,13 +43,5 @@ public class SetorService {
     public void vincularPessoaTutora(SetorResponsavel setor, PessoaTutora pessoa) {
         setor.adicionarPessoaTutora(pessoa);
         atualizarSetor(setor);
-    }
-
-    private String gerarIdUnico() {
-        String id;
-        do {
-            id = UUID.randomUUID().toString();
-        } while (IDManager.existeId(id));
-        return id;
     }
 }

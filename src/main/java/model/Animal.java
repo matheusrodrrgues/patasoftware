@@ -3,7 +3,8 @@ package model;
 import java.util.Objects;
 
 public class Animal {
-    private String id;
+    private static int contador = 1;
+    private int id;
     private String nome;
     private String especie;
     private String raca;
@@ -13,8 +14,8 @@ public class Animal {
     private SetorResponsavel setor;
     private PessoaTutora pessoaTutora;
 
-    public Animal(String id, String nome, String especie, String raca, int idade, String sexo, String situacao, SetorResponsavel setor, PessoaTutora pessoaTutora) {
-        setId(id);
+    public Animal(String nome, String especie, String raca, int idade, String sexo, String situacao, SetorResponsavel setor, PessoaTutora pessoaTutora) {
+        this.id = contador++;
         setNome(nome);
         setEspecie(especie);
         setRaca(raca);
@@ -25,9 +26,9 @@ public class Animal {
         setPessoaTutora(pessoaTutora);
     }
 
-    public String getId() { return id; }
-    public void setId(String id) {
-        if (id == null || id.isEmpty()) throw new IllegalArgumentException("ID do animal é obrigatório.");
+    public int getId() { return id; }
+    public void setId(int id) {
+        if (id <= 0) throw new IllegalArgumentException("ID do animal deve ser positivo.");
         this.id = id;
     }
     public String getNome() { return nome; }
