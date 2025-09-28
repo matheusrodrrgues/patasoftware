@@ -1,0 +1,29 @@
+[ {
+  "id" : 1,
+  "nome" : "Moana",
+  "especie" : "Cachorro",
+  "raca" : "Poodle",
+  "idade" : 2,
+  "sexo" : "F",
+  "situacao" : "Disponível para adoção",
+  "pessoaTutora" : {
+    "email" : "teste@gmail.com",
+    "nome" : "Barreto Silva",
+    "endereco" : "Rua A, FSA, BA",
+    "telefone" : "75981888888"
+  }
+}, {
+  "id" : 2,
+  "nome" : "Bolinha",
+  "especie" : "Cachorro",
+  "raca" : "Viralata",
+  "idade" : 2,
+  "sexo" : "M",
+  "situacao" : "Em observação",
+  "pessoaTutora" : {
+    "email" : "teste2@gmail.com",
+    "nome" : "Madalena Braga",
+    "endereco" : "Rua B, FSA, BA",
+    "telefone" : "75981554422"
+  }
+} ]

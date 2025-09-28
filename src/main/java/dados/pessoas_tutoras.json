@@ -1,0 +1,11 @@
+[ {
+  "email" : "teste@gmail.com",
+  "nome" : "Barreto Silva",
+  "endereco" : "Rua A, FSA, BA",
+  "telefone" : "75981888888"
+}, {
+  "email" : "teste2@gmail.com",
+  "nome" : "Madalena Braga",
+  "endereco" : "Rua B, FSA, BA",
+  "telefone" : "75981554422"
+} ]
