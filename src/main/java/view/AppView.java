@@ -500,4 +500,8 @@ public class AppView {
             return -1;
         }
     }
+
+    public void exibirMensagem(String msg) {
+        System.out.println(msg);
+    }
 }
