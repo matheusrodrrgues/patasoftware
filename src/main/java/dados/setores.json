@@ -2,33 +2,51 @@
   "id" : 1,
   "nome" : "Modulo 1",
   "endereco" : "Modulo 1, UEFS",
-  "animais" : [ ],
+  "animais" : [ {
+    "id" : 1,
+    "nome" : "Bolinha",
+    "especie" : "Cachorro",
+    "raca" : "Poodle",
+    "idade" : 7,
+    "sexo" : "M",
+    "situacao" : "Em observação",
+    "pessoaTutora" : {
+      "email" : "teste1@gmail.com",
+      "nome" : "Matheus Barbosa",
+      "endereco" : "Rua Almirante",
+      "telefone" : "75981881920",
+      "setorId" : 1
+    }
+  } ],
   "pessoaTutora" : {
     "email" : "teste1@gmail.com",
-    "nome" : "Barreto",
-    "endereco" : "Rua B, UEFS",
-    "telefone" : "75981888888"
+    "nome" : "Matheus Silva Rodrigues",
+    "endereco" : "Rua Rio Juruá 49, Bairro Brasilia, FSA, BA.",
+    "telefone" : "75991303289",
+    "setorId" : 1
   }
 }, {
   "id" : 2,
   "nome" : "Modulo 2",
-  "endereco" : "Modulo 2, UEFS",
+  "endereco" : "Modulo 2, UEFS ",
   "animais" : [ ],
   "pessoaTutora" : {
-    "email" : "teste2@gmail.com",
-    "nome" : "Barretoza",
-    "endereco" : "Rua A, UEFS",
-    "telefone" : "75985558888"
+    "email" : "teste2@hotmail.com",
+    "nome" : "João Pedro",
+    "endereco" : "Rua Papagaio 49, FSA, BA.",
+    "telefone" : "75981551236",
+    "setorId" : 2
   }
 }, {
   "id" : 3,
   "nome" : "Modulo 3",
   "endereco" : "Modulo 3, UEFS",
   "animais" : [ ],
-  "pessoaTutora" : {
-    "email" : "teste3@gmail.com",
-    "nome" : "Paolo",
-    "endereco" : "Rua P, UEFS",
-    "telefone" : "75985886333"
-  }
+  "pessoaTutora" : null
+}, {
+  "id" : 4,
+  "nome" : "Modulo 4",
+  "endereco" : "Modulo 4, UEFS",
+  "animais" : [ ],
+  "pessoaTutora" : null
 } ]

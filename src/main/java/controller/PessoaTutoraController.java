@@ -3,6 +3,7 @@ package controller;
 import model.PessoaTutora;
 import model.SetorResponsavel;
 import service.PessoaTutoraService;
+import repository.SetorRepository;
 import java.util.List;
 
 public class PessoaTutoraController {
@@ -10,6 +11,10 @@ public class PessoaTutoraController {
 
     public PessoaTutoraController() {
         pessoaTutoraService = new PessoaTutoraService();
+    }
+
+    public PessoaTutoraController(SetorRepository setorRepository) {
+        pessoaTutoraService = new PessoaTutoraService(setorRepository);
     }
 
     public PessoaTutora criarPessoaTutora(String email, String nome, String endereco, String telefone, SetorResponsavel setor) {

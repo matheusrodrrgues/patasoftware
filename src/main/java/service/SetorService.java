@@ -13,6 +13,10 @@ public class SetorService {
         setorRepository = new SetorRepository();
     }
 
+    public SetorService(SetorRepository setorRepository) {
+        this.setorRepository = setorRepository;
+    }
+
     public SetorResponsavel criarSetor(String nome, String endereco) {
         SetorResponsavel setor = new SetorResponsavel(nome, endereco);
         setorRepository.salvar(setor);

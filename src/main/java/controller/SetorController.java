@@ -5,15 +5,16 @@ import model.Animal;
 import model.PessoaTutora;
 import service.SetorService;
 import service.PessoaTutoraService;
+import repository.SetorRepository;
 import java.util.List;
 
 public class SetorController {
     private SetorService setorService;
     private PessoaTutoraService pessoaTutoraService;
 
-    public SetorController() {
-        setorService = new SetorService();
-        pessoaTutoraService = new PessoaTutoraService();
+    public SetorController(SetorRepository setorRepository) {
+        setorService = new SetorService(setorRepository);
+        pessoaTutoraService = new PessoaTutoraService(setorRepository);
     }
 
     public SetorResponsavel criarSetor(String nome, String endereco) {

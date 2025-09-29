@@ -1,6 +1,7 @@
 package repository;
 
 import model.Animal;
+import model.SetorResponsavel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.File;
@@ -8,48 +9,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnimalRepository {
-    private List<Animal> animais;
-    private static final String ARQUIVO_JSON = "src/main/java/dados/animais.json";
+    private SetorRepository setorRepository;
+    private static final String ARQUIVO_JSON = "src/main/java/dados/setores.json";
 
-    public AnimalRepository() {
-        animais = new ArrayList<>();
+    public AnimalRepository(SetorRepository setorRepository) {
+        this.setorRepository = setorRepository;
         carregarDeArquivo();
     }
 
-    public void salvar(Animal animal) {
-        animais.add(animal);
-        salvarEmArquivo();
+    public void salvar(Animal animal, int setorId) {
+        SetorResponsavel setor = setorRepository.buscarPorId(setorId);
+        if (setor != null) {
+            setor.adicionarAnimal(animal);
+            setorRepository.atualizar(setor);
+        }
     }
 
-    public void atualizar(Animal animal) {
-        for (int i = 0; i < animais.size(); i++) {
-            if (animais.get(i).getId() == animal.getId()) {
-                animais.set(i, animal);
-                salvarEmArquivo();
-                return;
+    public void atualizar(Animal animal, int setorId) {
+        SetorResponsavel setor = setorRepository.buscarPorId(setorId);
+        if (setor != null) {
+            List<Animal> animais = setor.getAnimais();
+            for (int i = 0; i < animais.size(); i++) {
+                if (animais.get(i).getId() == animal.getId()) {
+                    animais.set(i, animal);
+                    setorRepository.atualizar(setor);
+                    return;
+                }
             }
         }
     }
 
-    public void remover(int id) {
-        animais.removeIf(a -> a.getId() == id);
-        salvarEmArquivo();
+    public void remover(int animalId, int setorId) {
+        SetorResponsavel setor = setorRepository.buscarPorId(setorId);
+        if (setor != null) {
+            setor.getAnimais().removeIf(a -> a.getId() == animalId);
+            setorRepository.atualizar(setor);
+        }
     }
 
-    public Animal buscarPorId(int id) {
-        return animais.stream().filter(a -> a.getId() == id).findFirst().orElse(null);
+    public Animal buscarPorId(int animalId, int setorId) {
+        SetorResponsavel setor = setorRepository.buscarPorId(setorId);
+        if (setor != null) {
+            return setor.getAnimais().stream().filter(a -> a.getId() == animalId).findFirst().orElse(null);
+        }
+        return null;
     }
 
     public List<Animal> listarTodos() {
-        return new ArrayList<>(animais);
+        List<Animal> todosAnimais = new ArrayList<>();
+        for (SetorResponsavel setor : setorRepository.listarTodos()) {
+            todosAnimais.addAll(setor.getAnimais());
+        }
+        return todosAnimais;
     }
 
     public void salvarEmArquivo() {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(ARQUIVO_JSON), animais);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(ARQUIVO_JSON), setorRepository.listarTodos());
         } catch (Exception e) {
-            System.out.println("Erro ao salvar animais: " + e.getMessage());
+            System.out.println("Erro ao salvar setores: " + e.getMessage());
         }
     }
 
@@ -58,11 +77,11 @@ public class AnimalRepository {
             ObjectMapper mapper = new ObjectMapper();
             File file = new File(ARQUIVO_JSON);
             if (file.exists()) {
-                List<Animal> lista = mapper.readValue(file, new TypeReference<List<Animal>>(){});
-                if (lista != null) animais = lista;
+                List<SetorResponsavel> lista = mapper.readValue(file, new TypeReference<List<SetorResponsavel>>(){});
+                if (lista != null) setorRepository.setSetores(lista);
             }
         } catch (Exception e) {
-            System.out.println("Erro ao carregar animais: " + e.getMessage());
+            System.out.println("Erro ao carregar setores: " + e.getMessage());
         }
     }
 }

@@ -8,23 +8,26 @@ import model.SetorResponsavel;
 import model.PessoaTutora;
 import java.util.List;
 import java.util.Scanner;
+import repository.SetorRepository;
 
 public class AppView {
+    private SetorRepository setorRepository;
     private AnimalController animalController;
     private SetorController setorController;
     private PessoaTutoraController pessoaTutoraController;
     private Scanner scanner;
 
     public AppView() {
-        animalController = new AnimalController();
-        setorController = new SetorController();
-        pessoaTutoraController = new PessoaTutoraController();
+        setorRepository = new SetorRepository();
+        animalController = new AnimalController(setorRepository);
+        setorController = new SetorController(setorRepository);
+        pessoaTutoraController = new PessoaTutoraController(setorRepository);
         scanner = new Scanner(System.in);
     }
 
     public void iniciar() {
         while (true) {
-            System.out.println("\n=== Pata Amiga UEFS ===");
+            System.out.println("\n=== PATA Software ===");
             System.out.println("1. Gerenciar Animais");
             System.out.println("2. Gerenciar Setores Responsáveis");
             System.out.println("3. Gerenciar Pessoas Tutoras");
@@ -78,24 +81,17 @@ public class AppView {
             int opcaoSituacao = lerInt();
             String situacao;
             switch (opcaoSituacao) {
-                case 1:
-                    situacao = "Em observação";
-                    break;
-                case 2:
-                    situacao = "Disponível para adoção";
-                    break;
-                case 3:
-                    situacao = "Em tratamento";
-                    break;
-                default:
-                    System.out.println("Opção inválida! Usando 'Em observação' por padrão.");
-                    situacao = "Em observação";
+                case 1: situacao = "Em observação"; break;
+                case 2: situacao = "Disponível para adoção"; break;
+                case 3: situacao = "Em tratamento"; break;
+                default: System.out.println("Opção inválida! Usando 'Em observação' por padrão."); situacao = "Em observação";
             }
             SetorResponsavel setor = escolherSetor();
+            int setorId = setor.getId();
             PessoaTutora pessoa = setor.getPessoaTutora();
-            Animal animal = animalController.criarAnimal(nome, especie, raca, idade, sexo, situacao, setor, pessoa);
+            Animal animal = animalController.criarAnimal(nome, especie, raca, idade, sexo, situacao, setorId, pessoa);
             animal.setSetor(setor); // reforça vínculo
-            setorController.vincularAnimal(setor, animal);
+            // setorController.vincularAnimal(setor, animal); // Remover ou adaptar se necessário
             System.out.println("Animal cadastrado com sucesso!");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
@@ -115,13 +111,20 @@ public class AppView {
         listarAnimais();
         System.out.print("Informe o ID do animal para editar: ");
         int id = lerInt();
-        Animal animal = animalController.buscarPorId(id);
-        if (animal == null) {
+        Animal animal = null;
+        SetorResponsavel setor = null;
+        List<SetorResponsavel> setores = setorController.listarTodos();
+        for (SetorResponsavel s : setores) {
+            animal = animalController.buscarPorId(id, s.getId());
+            if (animal != null) {
+                setor = s;
+                break;
+            }
+        }
+        if (animal == null || setor == null) {
             System.out.println("Animal não encontrado.");
             return;
         }
-        // Garante que o setor do animal está preenchido
-        SetorResponsavel setor = buscarSetorDoAnimal(animal);
         animal.setSetor(setor);
         try {
             System.out.print("Novo nome (atual: " + animal.getNome() + "): "); String nome = scanner.nextLine();
@@ -131,7 +134,7 @@ public class AppView {
             System.out.print("Novo sexo (atual: " + animal.getSexo() + "): "); String sexo = scanner.nextLine();
             System.out.print("Nova situação (atual: " + animal.getSituacao() + "): "); String situacao = scanner.nextLine();
             animal.setNome(nome); animal.setEspecie(especie); animal.setRaca(raca); animal.setIdade(idade); animal.setSexo(sexo); animal.setSituacao(situacao);
-            animalController.atualizarAnimal(animal);
+            animalController.atualizarAnimal(animal, setor.getId());
             setorController.atualizarSetor(setor);
             System.out.println("Animal atualizado com sucesso!");
         } catch (Exception e) {
@@ -143,18 +146,25 @@ public class AppView {
         listarAnimais();
         System.out.print("Informe o ID do animal para remover: ");
         int id = lerInt();
-        Animal animal = animalController.buscarPorId(id);
-        if (animal == null) {
+        Animal animal = null;
+        SetorResponsavel setor = null;
+        List<SetorResponsavel> setores = setorController.listarTodos();
+        for (SetorResponsavel s : setores) {
+            animal = animalController.buscarPorId(id, s.getId());
+            if (animal != null) {
+                setor = s;
+                break;
+            }
+        }
+        if (animal == null || setor == null) {
             System.out.println("Animal não encontrado.");
             return;
         }
-        // Garante que o setor do animal está preenchido
-        SetorResponsavel setor = buscarSetorDoAnimal(animal);
         animal.setSetor(setor);
         System.out.print("Tem certeza que deseja remover? (s/n): ");
         String confirm = scanner.nextLine();
         if (confirm.equalsIgnoreCase("s")) {
-            animalController.removerAnimal(id);
+            animalController.removerAnimal(id, setor.getId());
             setor.getAnimais().removeIf(a -> a.getId() == id);
             setorController.atualizarSetor(setor);
             System.out.println("Animal removido com sucesso!");
@@ -243,9 +253,9 @@ public class AppView {
             System.out.println("Setor não encontrado.");
             return;
         }
-        SetorResponsavel novoSetor = null;
         if (setor.getAnimais() != null && !setor.getAnimais().isEmpty()) {
-            System.out.println("Existem animais vinculados a este setor. Escolha um novo setor para remanejamento:");
+            System.out.println("Existem animais vinculados a este setor. Você deve transferi-los para outro setor antes de apagar.");
+            SetorResponsavel novoSetor = null;
             while (true) {
                 novoSetor = escolherSetor();
                 if (novoSetor.getId() == setor.getId()) {
@@ -254,12 +264,22 @@ public class AppView {
                     break;
                 }
             }
+            for (Animal animal : setor.getAnimais()) {
+                animal.setSetor(novoSetor);
+                novoSetor.adicionarAnimal(animal);
+            }
+            setor.getAnimais().clear();
+            setorController.atualizarSetor(novoSetor);
         }
-        System.out.print("Tem certeza que deseja remover? (s/n): ");
+        PessoaTutora pessoa = setor.getPessoaTutora();
+        System.out.print("Tem certeza que deseja remover o setor e a pessoa tutora vinculada? (s/n): ");
         String confirm = scanner.nextLine();
         if (confirm.equalsIgnoreCase("s")) {
-            setorController.removerSetor(id, novoSetor);
-            System.out.println("Setor removido com sucesso!");
+            if (pessoa != null) {
+                pessoaTutoraController.removerPessoaTutora(pessoa.getEmail());
+            }
+            setorController.removerSetor(id, null);
+            System.out.println("Setor e pessoa tutora removidos com sucesso!");
         } else {
             System.out.println("Remoção cancelada.");
         }
@@ -300,11 +320,17 @@ public class AppView {
     }
 
     private void listarPessoasTutoras() {
-        List<PessoaTutora> pessoas = pessoaTutoraController.listarTodos();
-        if (pessoas.isEmpty()) {
+        List<SetorResponsavel> setores = setorController.listarTodos();
+        boolean encontrou = false;
+        for (SetorResponsavel setor : setores) {
+            PessoaTutora pessoa = setor.getPessoaTutora();
+            if (pessoa != null) {
+                System.out.println(pessoa.getEmail() + " - " + pessoa.getNome() + " - " + setor.getNome());
+                encontrou = true;
+            }
+        }
+        if (!encontrou) {
             System.out.println("Nenhuma pessoa tutora cadastrada.");
-        } else {
-            pessoas.forEach(p -> System.out.println(p.getEmail() + " - " + p.getNome() + " - " + p.getSetor().getNome()));
         }
     }
 
@@ -318,11 +344,34 @@ public class AppView {
             return;
         }
         try {
+            System.out.println("Deixe o campo em branco para manter o valor atual.");
             System.out.print("Novo nome (atual: " + pessoa.getNome() + "): "); String nome = scanner.nextLine();
+            if (nome.isBlank()) nome = pessoa.getNome();
             System.out.print("Novo endereço (atual: " + pessoa.getEndereco() + "): "); String endereco = scanner.nextLine();
+            if (endereco.isBlank()) endereco = pessoa.getEndereco();
             System.out.print("Novo telefone (atual: " + pessoa.getTelefone() + "): "); String telefone = scanner.nextLine();
-            pessoa.setNome(nome); pessoa.setEndereco(endereco); pessoa.setTelefone(telefone);
+            if (telefone.isBlank()) telefone = pessoa.getTelefone();
+            PessoaTutora pessoaTemp = new PessoaTutora(pessoa.getEmail(), nome, endereco, telefone, pessoa.getSetor());
+            pessoa.setNome(nome);
+            pessoa.setEndereco(endereco);
+            pessoa.setTelefone(telefone);
+            SetorResponsavel setor = pessoa.getSetor();
+            if (setor == null) {
+                List<SetorResponsavel> setores = setorController.listarTodos();
+                for (SetorResponsavel s : setores) {
+                    if (s.getPessoaTutora() != null && s.getPessoaTutora().getEmail().equals(pessoa.getEmail())) {
+                        setor = s;
+                        break;
+                    }
+                }
+            }
+            if (setor != null) {
+                pessoa.setSetor(setor);
+                setor.setPessoaTutora(pessoa);
+                setorController.atualizarSetor(setor);
+            }
             pessoaTutoraController.atualizarPessoaTutora(pessoa);
+            pessoa = pessoaTutoraController.buscarPorEmail(email);
             System.out.println("Pessoa tutora atualizada com sucesso!");
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());

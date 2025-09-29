@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
 public class Animal {
@@ -11,6 +13,7 @@ public class Animal {
     private int idade;
     private String sexo;
     private String situacao;
+    @JsonIgnore
     private SetorResponsavel setor;
     private PessoaTutora pessoaTutora;
 

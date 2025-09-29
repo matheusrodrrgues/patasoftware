@@ -2,15 +2,20 @@ package service;
 
 import model.PessoaTutora;
 import model.SetorResponsavel;
-import repository.PessoaTutoraRepository;
+import repository.SetorRepository;
 import repository.IDManager;
 import java.util.List;
+import java.util.ArrayList;
 
 public class PessoaTutoraService {
-    private PessoaTutoraRepository pessoaTutoraRepository;
+    private SetorRepository setorRepository;
 
     public PessoaTutoraService() {
-        pessoaTutoraRepository = new PessoaTutoraRepository();
+        setorRepository = new SetorRepository();
+    }
+
+    public PessoaTutoraService(SetorRepository setorRepository) {
+        this.setorRepository = setorRepository;
     }
 
     public PessoaTutora criarPessoaTutora(String email, String nome, String endereco, String telefone, SetorResponsavel setor) {
@@ -18,25 +23,53 @@ public class PessoaTutoraService {
             throw new IllegalArgumentException("Já existe uma pessoa tutora com este e-mail.");
         }
         PessoaTutora pessoa = new PessoaTutora(email, nome, endereco, telefone, setor);
-        pessoaTutoraRepository.salvar(pessoa);
+        setor.setPessoaTutora(pessoa);
+        setorRepository.atualizar(setor);
         IDManager.adicionarId(email);
         return pessoa;
     }
 
     public void atualizarPessoaTutora(PessoaTutora pessoa) {
-        pessoaTutoraRepository.atualizar(pessoa);
+        SetorResponsavel setor = pessoa.getSetor();
+        if (setor != null) {
+            setor.setPessoaTutora(pessoa);
+            setorRepository.atualizar(setor);
+        }
     }
 
     public void removerPessoaTutora(String email) {
-        pessoaTutoraRepository.remover(email);
-        IDManager.removerId(email);
+        List<SetorResponsavel> setores = setorRepository.listarTodos();
+        for (SetorResponsavel setor : setores) {
+            PessoaTutora pessoa = setor.getPessoaTutora();
+            if (pessoa != null && pessoa.getEmail().equals(email)) {
+                setor.setPessoaTutora(null);
+                setorRepository.atualizar(setor);
+                IDManager.removerId(email);
+                break;
+            }
+        }
     }
 
     public PessoaTutora buscarPorEmail(String email) {
-        return pessoaTutoraRepository.buscarPorEmail(email);
+        List<SetorResponsavel> setores = setorRepository.listarTodos();
+        for (SetorResponsavel setor : setores) {
+            PessoaTutora pessoa = setor.getPessoaTutora();
+            if (pessoa != null && pessoa.getEmail().equals(email)) {
+                return pessoa;
+            }
+        }
+        return null;
     }
 
     public List<PessoaTutora> listarTodos() {
-        return pessoaTutoraRepository.listarTodos();
+        List<PessoaTutora> pessoas = new ArrayList<>();
+        List<SetorResponsavel> setores = setorRepository.listarTodos();
+        for (SetorResponsavel setor : setores) {
+            PessoaTutora pessoa = setor.getPessoaTutora();
+            if (pessoa != null) {
+                pessoas.add(pessoa);
+            }
+        }
+        return pessoas;
     }
 }

@@ -1,6 +1,7 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -10,6 +11,8 @@ public class PessoaTutora {
     private String nome;
     private String endereco;
     private String telefone;
+    @JsonProperty("setorId")
+    private int setorId;
     @JsonIgnore
     private SetorResponsavel setor;
 
@@ -49,10 +52,18 @@ public class PessoaTutora {
         if (!TELEFONE_PATTERN.matcher(telefone).matches()) throw new IllegalArgumentException("Telefone deve conter 10 ou 11 dígitos.");
         this.telefone = telefone;
     }
+    @JsonProperty("setorId")
+    public int getSetorId() {
+        return setor != null ? setor.getId() : setorId;
+    }
+    @JsonProperty("setorId")
+    public void setSetorId(int setorId) {
+        this.setorId = setorId;
+    }
     public SetorResponsavel getSetor() { return setor; }
     public void setSetor(SetorResponsavel setor) {
-        if (setor == null) throw new IllegalArgumentException("Setor responsável é obrigatório.");
         this.setor = setor;
+        if (setor != null) this.setorId = setor.getId();
     }
 
     @Override

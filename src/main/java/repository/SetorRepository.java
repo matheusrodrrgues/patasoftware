@@ -65,4 +65,8 @@ public class SetorRepository {
             System.out.println("Erro ao carregar setores: " + e.getMessage());
         }
     }
+
+    public void setSetores(List<SetorResponsavel> setores) {
+        this.setores = setores;
+    }
 }
