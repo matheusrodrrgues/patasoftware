@@ -1,3 +1,8 @@
+/**
+ * PATA Software - Painel Administrativo de Tratamento Animal (PATA)
+ * Classe responsável pela interface de usuário do sistema.
+ * Exibe menus e recebe comandos do usuário.
+ */
 package view;
 
 import controller.AnimalController;
@@ -17,6 +22,10 @@ public class AppView {
     private PessoaTutoraController pessoaTutoraController;
     private Scanner scanner;
 
+    /**
+     * Construtor da interface de usuário.
+     * Inicializa os controladores e o scanner.
+     */
     public AppView() {
         setorRepository = new SetorRepository();
         animalController = new AnimalController(setorRepository);
@@ -25,6 +34,9 @@ public class AppView {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Método principal que inicia o sistema e exibe o menu inicial.
+     */
     public void iniciar() {
         while (true) {
             System.out.println("\n=== PATA Software ===");

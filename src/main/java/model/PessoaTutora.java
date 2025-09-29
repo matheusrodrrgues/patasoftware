@@ -1,3 +1,7 @@
+/**
+ * Classe que representa uma pessoa tutora no sistema.
+ * Possui informações como email, nome, endereço, telefone e setor vinculado.
+ */
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,9 +11,13 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class PessoaTutora {
+    /** Email da pessoa tutora. */
     private String email;
+    /** Nome da pessoa tutora. */
     private String nome;
+    /** Endereço da pessoa tutora. */
     private String endereco;
+    /** Telefone da pessoa tutora. */
     private String telefone;
     @JsonProperty("setorId")
     private int setorId;
@@ -19,6 +27,14 @@ public class PessoaTutora {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(gmail|outlook|hotmail)\\.com$");
     private static final Pattern TELEFONE_PATTERN = Pattern.compile("^\\d{10,11}$");
 
+    /**
+     * Construtor completo da pessoa tutora.
+     * @param email email da pessoa tutora
+     * @param nome nome da pessoa tutora
+     * @param endereco endereço da pessoa tutora
+     * @param telefone telefone da pessoa tutora
+     * @param setor setor vinculado
+     */
     public PessoaTutora(String email, String nome, String endereco, String telefone, SetorResponsavel setor) {
         setEmail(email);
         setNome(nome);
@@ -27,7 +43,9 @@ public class PessoaTutora {
         setSetor(setor);
     }
 
-    // Construtor padrão público
+    /**
+     * Construtor padrão.
+     */
     public PessoaTutora() {}
 
     public String getEmail() { return email; }

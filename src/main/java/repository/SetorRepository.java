@@ -1,3 +1,7 @@
+/**
+ * Repositório responsável por gerenciar os setores do sistema.
+ * Permite salvar, atualizar, remover e buscar setores.
+ */
 package repository;
 
 import model.SetorResponsavel;
@@ -11,16 +15,27 @@ public class SetorRepository {
     private List<SetorResponsavel> setores;
     private static final String ARQUIVO_JSON = "src/main/java/dados/setores.json";
 
+    /**
+     * Construtor do repositório de setores.
+     */
     public SetorRepository() {
         setores = new ArrayList<>();
         carregarDeArquivo();
     }
 
+    /**
+     * Salva um novo setor no sistema.
+     * @param setor setor a ser salvo
+     */
     public void salvar(SetorResponsavel setor) {
         setores.add(setor);
         salvarEmArquivo();
     }
 
+    /**
+     * Atualiza um setor existente.
+     * @param setor setor a ser atualizado
+     */
     public void atualizar(SetorResponsavel setor) {
         for (int i = 0; i < setores.size(); i++) {
             if (setores.get(i).getId() == setor.getId()) {
@@ -31,15 +46,28 @@ public class SetorRepository {
         }
     }
 
+    /**
+     * Remove um setor pelo id.
+     * @param id id do setor
+     */
     public void remover(int id) {
         setores.removeIf(s -> s.getId() == id);
         salvarEmArquivo();
     }
 
+    /**
+     * Busca um setor pelo id.
+     * @param id id do setor
+     * @return setor encontrado ou null
+     */
     public SetorResponsavel buscarPorId(int id) {
         return setores.stream().filter(s -> s.getId() == id).findFirst().orElse(null);
     }
 
+    /**
+     * Lista todos os setores cadastrados.
+     * @return lista de setores
+     */
     public List<SetorResponsavel> listarTodos() {
         return new ArrayList<>(setores);
     }

@@ -1,3 +1,7 @@
+/**
+ * Repositório responsável por gerenciar os animais do sistema.
+ * Permite salvar, atualizar, remover e buscar animais vinculados a setores.
+ */
 package repository;
 
 import model.Animal;
@@ -12,11 +16,20 @@ public class AnimalRepository {
     private SetorRepository setorRepository;
     private static final String ARQUIVO_JSON = "src/main/java/dados/setores.json";
 
+    /**
+     * Construtor do repositório de animais.
+     * @param setorRepository repositório de setores
+     */
     public AnimalRepository(SetorRepository setorRepository) {
         this.setorRepository = setorRepository;
         carregarDeArquivo();
     }
 
+    /**
+     * Salva um animal em um setor.
+     * @param animal animal a ser salvo
+     * @param setorId id do setor
+     */
     public void salvar(Animal animal, int setorId) {
         SetorResponsavel setor = setorRepository.buscarPorId(setorId);
         if (setor != null) {
@@ -25,6 +38,11 @@ public class AnimalRepository {
         }
     }
 
+    /**
+     * Atualiza um animal em um setor.
+     * @param animal animal a ser atualizado
+     * @param setorId id do setor
+     */
     public void atualizar(Animal animal, int setorId) {
         SetorResponsavel setor = setorRepository.buscarPorId(setorId);
         if (setor != null) {
@@ -39,6 +57,11 @@ public class AnimalRepository {
         }
     }
 
+    /**
+     * Remove um animal de um setor.
+     * @param animalId id do animal
+     * @param setorId id do setor
+     */
     public void remover(int animalId, int setorId) {
         SetorResponsavel setor = setorRepository.buscarPorId(setorId);
         if (setor != null) {
@@ -47,6 +70,12 @@ public class AnimalRepository {
         }
     }
 
+    /**
+     * Busca um animal pelo id e setor.
+     * @param animalId id do animal
+     * @param setorId id do setor
+     * @return animal encontrado ou null
+     */
     public Animal buscarPorId(int animalId, int setorId) {
         SetorResponsavel setor = setorRepository.buscarPorId(setorId);
         if (setor != null) {
@@ -55,6 +84,10 @@ public class AnimalRepository {
         return null;
     }
 
+    /**
+     * Lista todos os animais de todos os setores.
+     * @return lista de todos os animais
+     */
     public List<Animal> listarTodos() {
         List<Animal> todosAnimais = new ArrayList<>();
         for (SetorResponsavel setor : setorRepository.listarTodos()) {
@@ -63,6 +96,9 @@ public class AnimalRepository {
         return todosAnimais;
     }
 
+    /**
+     * Salva os dados dos setores em um arquivo JSON.
+     */
     public void salvarEmArquivo() {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -72,6 +108,9 @@ public class AnimalRepository {
         }
     }
 
+    /**
+     * Carrega os dados dos setores a partir de um arquivo JSON.
+     */
     public void carregarDeArquivo() {
         try {
             ObjectMapper mapper = new ObjectMapper();

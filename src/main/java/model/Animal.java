@@ -1,3 +1,7 @@
+/**
+ * Classe que representa um animal no sistema.
+ * Possui informações como nome, espécie, raça, idade, sexo, situação, setor e pessoa tutora.
+ */
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -5,18 +9,36 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
 
 public class Animal {
+    /** Identificador único do animal. */
     private static int contador = 1;
     private int id;
+    /** Nome do animal. */
     private String nome;
+    /** Espécie do animal. */
     private String especie;
+    /** Raça do animal. */
     private String raca;
+    /** Idade do animal. */
     private int idade;
+    /** Sexo do animal. */
     private String sexo;
+    /** Situação do animal (ex: em observação, disponível para adoção). */
     private String situacao;
     @JsonIgnore
     private SetorResponsavel setor;
     private PessoaTutora pessoaTutora;
 
+    /**
+     * Construtor completo do animal.
+     * @param nome nome do animal
+     * @param especie espécie do animal
+     * @param raca raça do animal
+     * @param idade idade do animal
+     * @param sexo sexo do animal
+     * @param situacao situação do animal
+     * @param setor setor responsável
+     * @param pessoaTutora pessoa tutora do animal
+     */
     public Animal(String nome, String especie, String raca, int idade, String sexo, String situacao, SetorResponsavel setor, PessoaTutora pessoaTutora) {
         this.id = contador++;
         setNome(nome);
@@ -29,6 +51,9 @@ public class Animal {
         setPessoaTutora(pessoaTutora);
     }
 
+    /**
+     * Construtor padrão.
+     */
     public Animal() {}
 
     public int getId() { return id; }
